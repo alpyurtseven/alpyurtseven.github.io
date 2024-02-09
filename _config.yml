@@ -2,7 +2,7 @@ title: Alperen Yurtseven
 author: Alperen Yurtseven
 remote_theme: samarsault/texture
 theme: texture
-email: your-email@domain.com
+email: alpyurtseven99@gmail.com
 description: > # this means to ignore newlines until "show_exerpts:"
   Write an awesome description for your new site here. You can edit this
   line in _config.yml. It will appear in your document head meta (for
@@ -23,7 +23,7 @@ texture:
   style: black
   showNav: true
   showPicker: false
-   navigation:
+  navigation:
     - title: Ana Sayfa
       url: "/"
 
