@@ -21,8 +21,11 @@ texture:
   tagline: Software Engineer
   date_format: "%b %-d, %Y"
   style: black
-  showNav: false
+  showNav: true
   showPicker: false
+   navigation:
+    - title: Ana Sayfa
+      url: "/"
 
   # generate social links in footer
   social_links:
