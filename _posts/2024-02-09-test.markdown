@@ -4,4 +4,4 @@ title:  "Test Post"
 date:   2024-02-9 19:06:00 +03
 ---
 
-Hello
+Hello This is github actions test
