@@ -1,5 +1,7 @@
 title: Texture Theme
 author: GitHub User
+remote_theme: samarsault/texture
+theme: texture
 email: your-email@domain.com
 description: > # this means to ignore newlines until "show_exerpts:"
   Write an awesome description for your new site here. You can edit this
@@ -15,18 +17,17 @@ sass:
 
 permalink: /posts/:title/
 texture:
-  title: Adam Denisov
-  tagline: Developer. Designer
+  title: Alperen Yurtseven
+  tagline: Software Engineer
   date_format: "%b %-d, %Y"
   style: black
   showNav: false
-  showPicker: true
+  showPicker: false
 
   # generate social links in footer
   social_links:
-    twitter: thelehhman
-    github:  thelehhman
-    linkedIn: in/thelehhman
+    github:  alpyurtseven
+    linkedIn: in/alpyurtseven
     rss: rss
  
 
