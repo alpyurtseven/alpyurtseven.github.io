@@ -1,0 +1,116 @@
+---
+layout: post
+title:  "Gitflow"
+date:   2024-12-12 13:40:00 +03
+---
+
+## GitFlow Nedir?
+GitFlow, yazılım projelerinde sürüm kontrolünü düzenli bir şekilde yönetmek için kullanılan bir branching (dal) modelidir. Büyük ve ekip tabanlı projelerde kodun düzenlenmesini, geliştirilmesini ve sürümlenmesini sağlar.
+
+---
+
+## Temel Branch Yapısı
+
+1. **Main**
+   - `Release` edilmiş en son stabil kod.
+   - Sadece test edilmiş ve tamamen hazır sürümler merge edilir.
+
+2. **Develop**
+   - Aktif geliştirme dalı.
+   - Stabil kabul edilen ve testten geçen kod buraya merge edilir.
+
+3. **Feature**
+   - Yeni özellik geliştirmeleri için oluşturulur.
+   - `develop` dalından çıkarılır ve tamamlandığında tekrar `develop` dalına merge edilir.
+
+4. **Release**
+   - Bir sürümün hazırlık aşamasında kullanılır.
+   - `develop` dalından çıkarılır ve hazır olduğunda `main` ve `develop` dallarına merge edilir.
+
+5. **Hotfix**
+   - `Release`'deki kritik hataları düzeltmek için kullanılır.
+   - `main` dalından çıkarılır ve düzeltme tamamlandığında `main` ve `develop` dallarına merge edilir.
+
+---
+
+## GitFlow İş Akışı
+
+### Feature
+
+```bash
+git checkout develop
+git checkout -b feature/feature-name
+```
+- Geliştirme tamamlanınca:
+```bash
+git add .
+git commit -m "Add feature-name"
+git checkout develop
+git merge feature/feature-name
+git branch -d feature/feature-name
+```
+
+### Release
+
+```bash
+git checkout develop
+git checkout -b release/x.y.z
+```
+- Testler ve düzeltmeler tamamlanınca:
+```bash
+git checkout main
+git merge release/x.y.z
+git tag -a x.y.z -m "Release x.y.z"
+
+git checkout develop
+git merge release/x.y.z
+git branch -d release/x.y.z
+```
+
+### Hotfix
+
+```bash
+git checkout main
+git checkout -b hotfix/hotfix-name
+```
+- Düzeltme tamamlanınca:
+```bash
+git add .
+git commit -m "Fix hotfix-name"
+git checkout main
+git merge hotfix/hotfix-name
+git tag -a x.y.z -m "Hotfix x.y.z"
+
+git checkout develop
+git merge hotfix/hotfix-name
+git branch -d hotfix/hotfix-name
+```
+
+---
+
+## Best Practices
+
+1. **Branch İsimlendirmesi**
+   - `feature/user-login`
+   - `hotfix/api-oauth-issue`
+   - `release/2.0.0`
+
+2. **Anlamlı Commit Mesajları**
+   - Kısa ve açıklayıcı mesajlar: `Add user authentication`, `Fix logging issue`
+
+3. **Pull Request ve Code Review**
+   - Merge işlemlerinden önce kodların incelenmesi.
+
+4. **Test Süreçleri**
+   - Yeni dallar merge edilmeden önce otomatik ya da manuel testlerden geçmeli.
+
+5. **Tag Kullanımı**
+   - Her yeni sürüm `main` dalına merge edildiğinde tag eklemek.
+
+---
+
+## Avantajlar
+- Karmaşık projelerde kod düzeni sağlama.
+- Geliştirme ve yayınlama ortamlarının net ayrımı.
+- Yeni özellikler ve hataların izole edilmesi.
+- Ekip koordinasyonunu kolaylaştırma.
