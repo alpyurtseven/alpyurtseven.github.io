@@ -5,7 +5,7 @@ date:   2024-12-12 13:40:00 +03
 ---
 
 ## GitFlow Nedir?
-GitFlow, yazılım projelerinde sürüm kontrolünü düzenli bir şekilde yönetmek için kullanılan bir branching (dal) modelidir. Büyük ve ekip tabanlı projelerde kodun düzenlenmesini, geliştirilmesini ve sürümlenmesini sağlar.
+GitFlow, yazılım projelerinde sürüm kontrolünü düzenli bir şekilde yönetmek için kullanılan bir branching modelidir.
 
 ---
 
