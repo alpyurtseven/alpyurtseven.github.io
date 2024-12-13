@@ -1,3 +1,10 @@
+---
+layout: post
+title:  "Githubflow"
+date:   2024-12-13 13:10:00 +03
+---
+
+
 ## GitHub Flow Nedir?
 GitHub Flow, modern ve hafif bir branching modeli. Özellikle sürekli dağıtım (CD) süreçlerine uygun, sade bir iş akışı için kullanılır. Küçük ve sık deploy yapılacak projelerde çok etkili.
 
