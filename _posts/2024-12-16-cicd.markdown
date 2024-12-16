@@ -1,0 +1,144 @@
+---
+layout: post
+title:  "CI/CD"
+date:   2024-12-16 14:10:00 +03
+---
+## CI/CD Nedir?
+
+### CI (Continuous Integration - Sürekli Entegrasyon)
+Kod değişikliklerinin sürekli olarak merkezi bir repository'ye entegre edilmesi anlamına gelir. Amaç, geliştiricilerin çalışma kopyalarını sürekli olarak paylaşılan bir branch ile birleştirerek, olası entegrasyon problemlerini erken tespit etmektir.
+
+- **Nasıl çalışır?**
+  - Geliştirici, kodunu repository'ye push eder.
+  - CI sistemi (Jenkins, GitHub Actions, GitLab CI, vs.) otomatik olarak build ve test süreçlerini tetikler.
+  - Hatalar anında raporlanır.
+
+### CD (Continuous Delivery - Sürekli Dağıtım)
+Kodun, test süreçlerinden geçtikten sonra manuel bir onay ile staging veya production ortama hazır hale getirilmesini ifade eder. Deployment sürecini otomatikleştirir.
+
+- **Nasıl çalışır?**
+  - CI sürecinden geçen kod staging ortamına deploy edilir.
+  - Onay alınırsa, production ortamına aktarılabilir.
+
+### CD (Continuous Deployment - Sürekli Yükleme)
+Testlerden geçmiş olan her kod değişikliği otomatik olarak production ortamına deploy edilir. Bu model, insan müdahalesini ortadan kaldırır.
+
+- **Nasıl çalışır?**
+  - Testlerden geçen kod değişiklikleri otomatik olarak kullanıcılara sunulur.
+
+---
+
+## CI/CD'nin Faydaları
+
+### 1. Daha Kısa Teslim Süreleri
+Kod değişiklikleri daha hızlı bir şekilde test edilip deploy edilebilir. Bu, yeni özelliklerin veya düzeltmelerin daha hızlı bir şekilde son kullanıcılara ulaşmasını sağlar.
+
+### 2. Erken Hata Tespiti
+Otomatik testler, hataları üretim ortamına geçmeden önce tespit etmeye yardımcı olur.
+
+### 3. Takım İşbirliğini Artırır
+Geliştiriciler, daha sık kod entegrasyonları yaptıkları için takım çalışması kolaylaşır. Conflict minimuma iner.
+
+### 4. Kod Kalitesini Artırır
+Sürekli build ve test süreçleri, kodun daha temiz ve bakımı kolay olmasını sağlar.
+
+### 5. Güvenilir Dağıtım Süreci
+Manuel müdahaleleri en aza indirerek daha stabil ve tekrarlanabilir bir deployment süreci sunar.
+
+### 6. Daha Az Geri Dönüş
+Hatalar erken tespit edildiği için deployment sonrası gerçekleştirilmesi gereken dönüşler azalır.
+
+### 7. Çevik Proje Yönetimi
+Scrum veya Kanban gibi çevik metodolojilerle uyumlu çalışır. Daha sık teslimatlar yaparak iterasyonların daha etkili olmasını sağlar.
+
+---
+
+## CI/CD Pipeline Adımları
+
+### 1. Kodu Tek Bir Repository'den Çek
+Kod, merkezi bir repository'den çekilir. Bu adım, pipeline'ın başlangıç noktasıdır.
+```bash
+git clone https://github.com/username/project-name.git
+```
+
+### 2. Uygulamayı Build Et
+Kodun çalışabilir hale gelmesi için derleme işlemi yapılır. Örnek:
+```bash
+dotnet build
+```
+Bu işlem, kodun hatasız şekilde derlenip derlenmediğini kontrol eder.
+
+### 3. Unit Test ve Kod Analizi Çalıştır
+Derleme işleminden sonra testler ve statik kod analizleri çalıştırılır. Hataların erken tespit edilmesi bu adımda sağlanır.
+```bash
+dotnet test
+```
+Kod analiz araçları ile kodun kalite standartlarına uygunluğu kontrol edilir:
+```bash
+dotnet format
+```
+
+### 4. Artifact Oluştur
+Derleme sonrası deploy edilebilir bir çıktı (artifact) oluşturulur. Örnek:
+```bash
+dotnet publish -c Release -o ./publish
+```
+Bu işlem, uygulamanın dağıtım için gerekli dosyalarını hazırlar.
+
+### 5. Container Oluştur (Opsiyonel)
+Artifact, Docker container içinde çalıştırılabilir hale getirilir. Bu adım, uygulamanın bağımsız bir ortamda çalışmasını sağlar:
+- **Dockerfile Örneği:**
+  ```dockerfile
+  FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
+  WORKDIR /app
+  COPY ./publish .
+  ENTRYPOINT ["dotnet", "YourApp.dll"]
+  ```
+- **Docker Image Oluşturma:**
+  ```bash
+  docker build -t yourapp:latest .
+  ```
+
+### 6. Artifact’i Sunucuya Deploy Et
+Artifact, bir sunucuya (development, QA, staging, production) deploy edilir. Örneğin Docker kullanarak container'ı başlat:
+```bash
+docker run -d -p 5000:80 --name yourapp-container yourapp:latest
+```
+Alternatif olarak artifact dosyalarını uzak bir sunucuya SCP ile göndermek:
+```bash
+scp -r ./publish user@server:/var/www/yourapp
+```
+
+---
+
+## Fallback ve Forward Yaklaşımlarıs
+
+### 1. Falling Backward (Fallback)
+Fallback, hata veya başarısızlık durumunda bir önceki çalışan duruma geri dönme yaklaşımıdır. Bu yöntem, yazılım sistemlerinde hata yönetimini kolaylaştırır ve sistemin bir şekilde çalışmaya devam etmesini sağlar. Örneğin, bir yeni sürüm başarısız olursa eski bir sürüm aktif hale getirilir.
+
+- **Avantajları:**
+  - Sistem stabilitesini hızlıca sağlar.
+  - Kullanıcı deneyimini minimum kesintiyle sürdürür.
+
+### 2. Falling Forward
+Falling forward, hata meydana geldiğinde sistemi olduğu yerden devam ettirme yaklaşımıdır. Bu yöntem, küçük hataların üstesinden gelmek için hızlı düzeltmeler veya bypass çözümleri kullanmayı hedefler.
+
+- **Avantajları:**
+  - Küçük sorunların çözümüyle daha az zaman kaybı.
+  - Kullanıcılar için genellikle daha az kesinti.
+
+- **Örnek:** Bir ödeme sisteminde hata meydana geldiğinde, hatalı ödemeleri işaretleyip diğer işlemleri devam ettirmek.
+
+
+## Notlar
+- CI/CD için popüler aracılar:
+  - Jenkins
+  - GitLab CI/CD
+  - GitHub Actions
+  - Travis CI
+  - CircleCI
+- CI/CD pipeline oluştururken test kapsamasına özen göstermek gerekiyor. Yetersiz testler, hataların production ortamına taşınmasına yol açabilir.
+
+---
+
+
