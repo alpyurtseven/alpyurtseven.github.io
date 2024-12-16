@@ -111,7 +111,7 @@ scp -r ./publish user@server:/var/www/yourapp
 
 ---
 
-## Fallback ve Forward Yaklaşımlarıs
+## Fallback ve Forward Yaklaşımları
 
 ### 1. Falling Backward (Fallback)
 Fallback, hata veya başarısızlık durumunda bir önceki çalışan duruma geri dönme yaklaşımıdır. Bu yöntem, yazılım sistemlerinde hata yönetimini kolaylaştırır ve sistemin bir şekilde çalışmaya devam etmesini sağlar. Örneğin, bir yeni sürüm başarısız olursa eski bir sürüm aktif hale getirilir.
